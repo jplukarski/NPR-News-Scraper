@@ -1,8 +1,9 @@
 $.getJSON("/articles", function (data) {
+
     for (var i = 0; i < data.length; i++) {
         if (!data[i].saved) {
 
-            $("#articleDump").append("<p data-id='" + data[i]._id + "'>" + "<a href='" + data[i].link + "'>" + data[i].title + "</a>" + "<button id='saveArticle' data-id='" + data[i]._id + "'>Save Article</button>");
+            $("#articleDump").append("<div class='class=articles'><p data-id='" + data[i]._id + "'>" + "<a href='" + data[i].link + "'>" + data[i].title + "</a>" + "<button class='btn btn-info' id='saveArticle' data-id='" + data[i]._id + "'>Save Article</button></div><hr>");
         }
     }
 })
@@ -12,6 +13,7 @@ $("#clearArticles").on("click", function () {
 })
 
 $("#articleScraper").on("click", function () {
+    $("#articleDump")
     unScrape()
     scrape()
 

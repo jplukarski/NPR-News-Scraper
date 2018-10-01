@@ -18,6 +18,8 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 
 //set up routes here
+
+//scrape the npr website
 app.get("/scrape", function (req, res) {
     axios.get("https://www.npr.org/").then(function (response) {
         var $ = cheerio.load(response.data);
@@ -35,6 +37,7 @@ app.get("/scrape", function (req, res) {
     res.send("Scraping Complete!")
 })
 
+//display the articles on the homepage once scraped
 app.get("/articles", function (req, res) {
     db.Article.find({})
         .then(function (dbArticle) {
@@ -45,6 +48,7 @@ app.get("/articles", function (req, res) {
         });
 });
 
+//unscrape the articles
 app.delete("/unscrape", function (req, res) {
     db.Article.deleteMany({}).then(function (dbArticle) {
         res.json(dbArticle)
@@ -53,17 +57,10 @@ app.delete("/unscrape", function (req, res) {
     })
 })
 
-app.get("/articles/:id", function (req, res) {
-    db.Article.findOne({ _id: req.params.id })
-        .populate("note")
-        .then(function (dbArticle) {
-            res.json(dbArticle);
-        })
-        .catch(function (err) {
-            res.json(err);
-        });
-});
 
+
+
+//add article to the saved page
 app.post("/saveArticle/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true }).then(function (dbArticle) {
         res.json(dbArticle);
@@ -73,6 +70,7 @@ app.post("/saveArticle/:id", function (req, res) {
         });
 })
 
+//remove article from the saved page
 app.post("/removeArticle/:id", function (req, res) {
     db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false }).then(function (dbArticle) {
         res.json(dbArticle);
@@ -82,6 +80,18 @@ app.post("/removeArticle/:id", function (req, res) {
         });
 })
 
+//Display the notes
+app.get("/articles/:id", function (req, res) {
+    db.Note.find({ articleID: req.params.id })
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+//create the notes
 app.post("/articles/:id", function (req, res) {
     db.Note.create(req.body)
         .then(function (dbNote) {
@@ -94,6 +104,15 @@ app.post("/articles/:id", function (req, res) {
             res.json(err);
         });
 });
+
+//delete the note
+app.delete("/deleteNote/:id", function (req, res) {
+    db.Note.deleteOne({ _id: req.params.id }).then(function (dbArticle) {
+        res.json(dbArticle)
+    }).catch(function (err) {
+        res.json(err)
+    })
+})
 
 app.get("/saved", function (req, res) {
     res.sendFile(path.join(__dirname, "./public/saved.html"));
