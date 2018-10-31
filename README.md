@@ -7,6 +7,6 @@ NPR Scraper scrapes news articles from NPR's homepage and allows you to save the
 * [Twitter Bootstrap](https://getbootstrap.com/) - Bootstrap is an open source toolkit for developing with HTML, CSS, and JS.
 * [MongoDb](https://www.mongodb.com/) - MongoDB is a free and open-source cross-platform document-oriented database program.
 
-##Live Link
+## Live Link
 
 https://scrape-npr-articles.herokuapp.com/
