@@ -1,4 +1,4 @@
-#NPR News Scraper
+# NPR News Scraper
 
 NPR Scraper scrapes news articles from NPR's homepage and allows you to save them and make comments on the article.
 
